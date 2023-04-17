@@ -22,17 +22,15 @@ public class MedicationDTO {
     private Integer weight;
 
     @NotEmpty
-    @Column(name = "medication_code")
     private String code;
 
-    @Lob
-    @Column(name = "medication_image", columnDefinition="BLOB")
-    private byte[] image;
+    @NotEmpty
+    private String image;
 
-    @Column(name = "battery_capacity")
+
+    @NotNull
     private Integer batteryCapacity;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "drone_state",  nullable = false)
+    @NotNull
     private DroneState state;
 }

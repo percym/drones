@@ -30,9 +30,9 @@ public class Medication extends BaseEntity {
     @Column(name = "medication_code")
     private String code;
 
-    @Lob
+
     @Column(name = "medication_image", columnDefinition="BLOB")
-    private byte[] image;
+    private String image;
 
 
 
