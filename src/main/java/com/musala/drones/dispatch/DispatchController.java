@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The controller for dispatching drones
@@ -79,6 +80,26 @@ public class DispatchController {
         return new ResponseEntity<>(medication, null, HttpStatus.OK);
     }
 
+
+    /**
+     *Method to update drone details
+     *
+     * @param  droneDTO  an absolute URL giving the base location of the image
+     * @return    Drone JSON object  with status 200 if saved ok
+     */
+    @PostMapping("/update-drone")
+    public ResponseEntity<Drone> updateDrone(@RequestBody  DroneDTO droneDTO) {
+        Optional<Drone> currentDrone = droneService.findById(droneDTO.getId());
+        Drone drone = new Drone();
+        if (currentDrone.isPresent()) {
+            drone = mapper.map(droneDTO, Drone.class);
+            log.info("{}", drone);
+            return new ResponseEntity<>(droneService.save(drone), null, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(drone, null, HttpStatus.BAD_REQUEST);
+    }
+
     /**
      *Method to list all  medications in database
      *
@@ -93,5 +114,7 @@ public class DispatchController {
         log.info(" all medication {}",medicationDTOS);
         return new ResponseEntity<>(medicationDTOS, null, HttpStatus.OK);
     }
+
+
 
 }
