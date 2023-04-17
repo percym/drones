@@ -8,9 +8,13 @@ import com.musala.drones.medication.MedicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The controller for dispatching drones
@@ -34,4 +38,12 @@ public class DispatchController {
         return new ResponseEntity<>(droneService.save(drone), null, HttpStatus.OK);
     }
 
+    @GetMapping("/get-all-drones")
+    public ResponseEntity<List<Drone>> addDrone() {
+        List<Drone> droneList = droneService.getAll();
+        List<DroneDTO> droneDTOList = new ArrayList<DroneDTO>();
+        droneDTOList = mapper.map(droneList, new TypeToken<List<DroneDTO>>() {}.getType());
+        log.info(" all drones{}",droneDTOList);
+        return new ResponseEntity<>(droneList, null, HttpStatus.OK);
+    }
 }
