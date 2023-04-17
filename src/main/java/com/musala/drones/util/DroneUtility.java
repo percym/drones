@@ -25,6 +25,7 @@ public class DroneUtility {
             medicineWeight.getAndAdd(medic.getWeight());
         });
         medicineWeight.getAndAdd(medication.getWeight());
+
         return medicineWeight.get() < 500;
     }
 }

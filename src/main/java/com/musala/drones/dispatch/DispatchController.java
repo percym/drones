@@ -9,6 +9,7 @@ import com.musala.drones.medication.Medication;
 import com.musala.drones.medication.MedicationService;
 import com.musala.drones.medication.dto.MedicationDTO;
 import com.musala.drones.util.DroneUtility;
+import com.musala.drones.util.MedicineUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -68,20 +69,6 @@ public class DispatchController {
     }
 
 
-    /**
-     *Method to add  a single medication item to database
-     * @Param medicationDTO with the valid medication specs
-     *Medication Id is set to zero since its new
-     * @return    {Link Medication } JSON object with medication if loaded json with status 200 if saved ok
-     */
-    @PostMapping("/add-medication")
-    public ResponseEntity<Medication> addMedication(@RequestBody MedicationDTO medicationDTO) {
-        Medication medication = mapper.map(medicationDTO,Medication.class);
-        medication.setId(0L);
-        log.info(" add medication {}",medicationDTO);
-        return new ResponseEntity<>(medication, null, HttpStatus.OK);
-    }
-
 
     /**
      *Method to update drone details
@@ -102,6 +89,32 @@ public class DispatchController {
 
         return new ResponseEntity<>(drone, null, HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     *Method to add  a single medication item to database
+     * @param medicationDTO with the valid medication specs
+     *Medication Id is set to zero since its new
+     * @return    {Link Medication } JSON object with medication if loaded json with status 200 if saved ok
+     */
+    @PostMapping("/add-medication")
+    public ResponseEntity<Medication> addMedication(@RequestBody MedicationDTO medicationDTO) {
+        Medication medication = mapper.map(medicationDTO,Medication.class);
+        medication.setId(0L);
+        log.info(" add medication {}",medication);
+        if (MedicineUtil.checkHasSpecialCharacter(medication.getName())){
+            throw new CustomException("Invalid medicine name has special characters");
+        }
+
+        if (MedicineUtil.checkHasSpecialCharacter(medication.getCode()) ){
+            throw new CustomException("Invalid medicine code has special characters");
+        }
+
+        if (MedicineUtil.checkHasNumbers(medication.getCode()) ){
+            throw new CustomException("Invalid medicine code has numbers");
+        }
+        return new ResponseEntity<>(medicationService.save(medication), null, HttpStatus.OK);
+    }
+
 
     /**
      *Method to list all  medications in database
