@@ -31,15 +31,7 @@ public class Medication extends BaseEntity {
     private String code;
 
 
-    @Column(name = "medication_image", columnDefinition="BLOB")
+    @Column(name = "medication_image")
     private String image;
 
-
-
-    @Column(name = "battery_capacity")
-    private Integer batteryCapacity;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "drone_state",  nullable = false)
-    private DroneState state;
 }
