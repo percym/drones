@@ -15,5 +15,5 @@ public interface DroneRepository extends JpaRepository<Drone,Long> {
 
     Drone save(Drone Drone);
 
-    List<Drone> getAll();
+    List<Drone> findAll();
 }

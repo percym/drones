@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The implementation for the {@Link DroneService} service
@@ -25,7 +26,12 @@ public class DroneServiceImpl  implements DroneService{
     }
 
     @Override
-    public List<Drone> getAll() {
-        return droneRepository.getAll();
+    public List<Drone> findAll() {
+        return droneRepository.findAll();
+    }
+
+    @Override
+    public Optional<Drone> findById(Long droneId) {
+        return droneRepository.findById(droneId);
     }
 }

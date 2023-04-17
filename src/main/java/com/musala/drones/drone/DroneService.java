@@ -1,6 +1,7 @@
 package com.musala.drones.drone;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The interface for the service
@@ -9,5 +10,8 @@ import java.util.List;
 public interface DroneService {
 
     Drone save(Drone drone);
-    List<Drone> getAll();
+
+    List<Drone> findAll();
+
+    Optional<Drone> findById(Long droneId);
 }
