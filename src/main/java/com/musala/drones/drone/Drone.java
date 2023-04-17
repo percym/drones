@@ -1,4 +1,4 @@
-package com.musala.drones;
+package com.musala.drones.drone;
 
 import com.musala.drones.base.BaseEntity;
 import com.musala.drones.enums.DroneModel;
