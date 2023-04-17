@@ -1,6 +1,7 @@
 package com.musala.drones.battery;
 
 import com.musala.drones.base.BaseEntityAudit;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "battery_checker")
+@Data
 public class BatteryChecker extends BaseEntityAudit {
 
     @NotEmpty
