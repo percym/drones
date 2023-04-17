@@ -7,11 +7,13 @@ import com.musala.drones.drone.DroneService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class BatteryCheckerTask {
 
     private final DroneService droneService;
