@@ -3,10 +3,12 @@ package com.musala.drones.dispatch;
 import com.musala.drones.drone.Drone;
 import com.musala.drones.drone.DroneService;
 import com.musala.drones.drone.dto.DroneDTO;
+import com.musala.drones.exceptions.CustomException;
 import com.musala.drones.mappers.Mapper;
 import com.musala.drones.medication.Medication;
 import com.musala.drones.medication.MedicationService;
 import com.musala.drones.medication.dto.MedicationDTO;
+import com.musala.drones.util.DroneUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -92,6 +94,7 @@ public class DispatchController {
         Optional<Drone> currentDrone = droneService.findById(droneDTO.getId());
         Drone drone = new Drone();
         if (currentDrone.isPresent()) {
+            if (DroneUtility.checkBattery(droneDTO))
             drone = mapper.map(droneDTO, Drone.class);
             log.info("{}", drone);
             return new ResponseEntity<>(droneService.save(drone), null, HttpStatus.OK);
@@ -115,6 +118,32 @@ public class DispatchController {
         return new ResponseEntity<>(medicationDTOS, null, HttpStatus.OK);
     }
 
+    /**
+     *Method to add medication to drone in {Link DroneStatus.Loading or DroneStatus.Idle} and battery above 25% drone will be
+     * set to status loading a weight check will be conducted to ensure current medicine + existing
+     * does not exceed 500gr
+     * @param droneId the drone to be loaded
+     * @param medicineId the id of medicine to be loaded
+     * @return    {Link MedicationDTO} JSON list  object with medication if loaded json with status 200 if saved ok
+     */
+    @GetMapping("/load-drone/{droneId}/{medicineId}")
+    public ResponseEntity<Drone> loadDrone(@PathVariable Long droneId, @PathVariable Long medicineId) {
+        Optional<Drone> currentDrone = droneService.findById(droneId);
+        if (!currentDrone.isPresent()){
+            throw new CustomException("Invalid Drone ");
+        }
+        Optional<Medication> currentMedication = medicationService.findById(medicineId);
+        if(!currentMedication.isPresent()){
+            throw new CustomException("Invalid Medication ");
+        }
+        if (!DroneUtility.checkDroneWeight(currentDrone.get(), currentMedication.get())){
+            throw new CustomException("Drone Overloaded ");
+        }
+        Drone droneToAdd = currentDrone.get();
+        droneToAdd.getMedication().add(currentMedication.get());
+        droneToAdd.setWeight(droneToAdd.getWeight() + droneToAdd.getWeight());
 
-
+        log.info(" loaded drone with medication {}",droneToAdd);
+        return new ResponseEntity<>(droneService.save(droneToAdd), null, HttpStatus.OK);
+    }
 }
