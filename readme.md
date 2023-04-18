@@ -1,8 +1,12 @@
 H2 Database url
 http://localhost:7676/drones/h2-console/
-![img.png](img.png)
+![img_5.png](img_5.png)
+Database is pre-populated with drone and medication data  
+![img_7.png](img_7.png)
 
-to donwload dependencies run   
+![img_8.png](img_8.png)
+
+to download dependencies run   
 mvn clean install -DskipTests
 ![img_1.png](img_1.png)
 to execute app
