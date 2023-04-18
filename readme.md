@@ -23,5 +23,7 @@ localhost:7676/drones/dispatch/
 localhost:7676/drones/dispatch/get-all-drones
 ![img_4.png](img_4.png)
 
+added swagger ui for better API viewing and tests
+![img_9.png](img_9.png)
 
 
