@@ -76,7 +76,7 @@ public class DispatchController {
      * @param  droneDTO  an absolute URL giving the base location of the image
      * @return    Drone JSON object  with status 200 if saved ok
      */
-    @PostMapping("/update-drone")
+    @PutMapping("/update-drone")
     public ResponseEntity<Drone> updateDrone(@RequestBody  DroneDTO droneDTO) {
         Optional<Drone> currentDrone = droneService.findById(droneDTO.getId());
         Drone drone = new Drone();
