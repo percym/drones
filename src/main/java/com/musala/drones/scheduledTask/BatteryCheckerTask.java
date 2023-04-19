@@ -18,7 +18,8 @@ public class BatteryCheckerTask {
 
     private final DroneService droneService;
     private final BatteryCheckerService batteryCheckerService;
-    @Scheduled(cron = "${cronexp}")
+
+    @Scheduled(cron = "0 * * * * ?")
     public void execute() throws InterruptedException {
 
         List<Drone>  droneList = droneService.findAll();
